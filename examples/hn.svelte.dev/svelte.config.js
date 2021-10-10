@@ -1,8 +1,6 @@
-import netlify from '@sveltejs/adapter-netlify';
-
 export default {
 	kit: {
-		adapter: netlify(),
+		adapter: '@sveltejs/adapter-node',
 		target: '#svelte'
 	}
 };
