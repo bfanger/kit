@@ -11,7 +11,7 @@ export default [
 			sourcemap: true
 		},
 		plugins: [nodeResolve(), commonjs(), json()],
-		external: ['@sveltejs/kit-app', ...require('module').builtinModules]
+		external: ['$server-build', ...require('module').builtinModules]
 	},
 	{
 		input: 'src/index.js',
@@ -21,7 +21,7 @@ export default [
 			sourcemap: true
 		},
 		plugins: [nodeResolve(), commonjs(), json()],
-		external: ['./middlewares.js', '@sveltejs/kit-app', ...require('module').builtinModules]
+		external: ['./middlewares.js', '$server-build', ...require('module').builtinModules]
 	},
 	{
 		input: 'src/shims.js',

@@ -33,7 +33,7 @@ const s = (value) => JSON.stringify(value);
  * @returns {Promise<import('types/internal').BuildData>}
  */
 export async function build(config, { cwd = process.cwd(), runtime = '@sveltejs/kit/ssr' } = {}) {
-	const raw_build_dir = `${SVELTE_KIT}/node_modules/@sveltejs/kit-app`;
+	const raw_build_dir = `${SVELTE_KIT}/build`;
 	const build_dir = path.resolve(cwd, raw_build_dir);
 
 	rimraf(build_dir);
@@ -496,7 +496,7 @@ async function build_server(
 		],
 		resolve: {
 			alias: {
-				'@sveltejs/kit-app': path.resolve(`${build_dir}/app.js`),
+				'$server-build': path.resolve(`${build_dir}/app.js`),
 				$app: path.resolve(`${build_dir}/runtime/app`),
 				$lib: config.kit.files.lib
 			}

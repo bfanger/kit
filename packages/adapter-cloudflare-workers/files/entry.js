@@ -1,6 +1,6 @@
-// @sveltejs/kit-app doesn't exist until the app is built
+// $server-build doesn't exist until the app is built
 // @ts-ignore
-import { init, render } from '@sveltejs/kit-app';
+import { init, render } from '$server-build';
 import { getAssetFromKV, NotFoundError } from '@cloudflare/kv-asset-handler';
 
 init();
