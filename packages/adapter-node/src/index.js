@@ -1,3 +1,4 @@
+import './shims';
 import { path, host, port } from './env';
 import { assetsMiddleware, kitMiddleware, prerenderedMiddleware } from './middlewares';
 import compression from 'compression';
