@@ -1,6 +1,7 @@
-import fs from 'fs';
-import path from 'path';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+import fs from 'fs';
+import { createRequire } from 'module';
+import path from 'path';
 import glob from 'tiny-glob/sync.js';
 import vite from 'vite';
 
@@ -11,7 +12,6 @@ import { create_app } from '../create_app/index.js';
 import create_manifest_data from '../create_manifest_data/index.js';
 import { SVELTE_KIT } from '../constants.js';
 import { copy_assets, posixify, resolve_entry } from '../utils.js';
-import { createRequire } from 'module';
 
 /** @param {any} value */
 const s = (value) => JSON.stringify(value);
@@ -293,11 +293,11 @@ async function build_server(
 
 	find_deps(client_entry_file, entry_js, entry_css);
 
-	const adapter = config.kit.adapter;
+	const adapter = config.kit.adapter.name;
 	const require = createRequire(import.meta.url);
 	const pkg_path = require.resolve(`${adapter}/package.json`);
 	const pkg = JSON.parse(fs.readFileSync(pkg_path, 'utf8'));
-	const main = path.resolve(pkg_path.substring(0, pkg_path.lastIndexOf('/')), pkg.main);
+	const main = path.resolve(pkg_path.substring(0, pkg_path.lastIndexOf('/')), pkg.adapter);
 
 	const app_file = `${build_dir}/app.js`;
 

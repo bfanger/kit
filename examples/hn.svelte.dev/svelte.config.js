@@ -1,6 +1,8 @@
+import adapter from '@sveltejs/adapter-node';
+
 export default {
 	kit: {
-		adapter: '@sveltejs/adapter-node',
+		adapter: adapter(),
 		target: '#svelte'
 	}
 };

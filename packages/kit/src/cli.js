@@ -118,29 +118,32 @@ prog
 	.command('build')
 	.describe('Create a production build of your app')
 	.option('--verbose', 'Log more stuff', false)
-	.action(async () => {
+	.action(async ({ verbose }) => {
 		process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 		const config = await get_config();
 
 		try {
 			const { build } = await import('./core/build/index.js');
-			await build(config);
+			const build_data = await build(config);
 
 			console.log(
 				`\nRun ${colors.bold().cyan('npm run preview')} to preview your production build locally.`
 			);
 
-			if (!config.kit.adapter) {
-				console.log(colors.bold().yellow('\nNo adapter specified'));
+			if (config.kit.adapter) {
+				const { adapt } = await import('./core/adapt/index.js');
+				await adapt(config, build_data, { verbose });
 
-				// prettier-ignore
-				console.log(
-					`See ${colors.bold().cyan('https://kit.svelte.dev/docs#adapters')} to learn how to configure your app to run on the platform of your choosing`
-				);
+				// this is necessary to close any open db connections, etc
+				process.exit(0);
 			}
 
-			// this is necessary to close any open db connections, etc
-			process.exit(0);
+			console.log(colors.bold().yellow('\nNo adapter specified'));
+
+			// prettier-ignore
+			console.log(
+				`See ${colors.bold().cyan('https://kit.svelte.dev/docs#adapters')} to learn how to configure your app to run on the platform of your choosing`
+			);
 		} catch (error) {
 			handle_error(error);
 		}

@@ -23,17 +23,17 @@ const options = object(
 		}),
 
 		kit: object({
-			adapter: validate(null, (input, _keypath) => {
-				// if (typeof input !== 'object' || !input.adapt) {
-				// 	let message = `${keypath} should be an object with an "adapt" method`;
+			adapter: validate(null, (input, keypath) => {
+				if (typeof input !== 'object' || !input.adapt) {
+					let message = `${keypath} should be an object with an "adapt" method`;
 
-				// 	if (Array.isArray(input) || typeof input === 'string') {
-				// 		// for the early adapter adopters
-				// 		message += ', rather than the name of an adapter';
-				// 	}
+					if (Array.isArray(input) || typeof input === 'string') {
+						// for the early adapter adopters
+						message += ', rather than the name of an adapter';
+					}
 
-				// 	throw new Error(`${message}. See https://kit.svelte.dev/docs#adapters`);
-				// }
+					throw new Error(`${message}. See https://kit.svelte.dev/docs#adapters`);
+				}
 
 				return input;
 			}),
