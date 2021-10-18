@@ -1,5 +1,11 @@
 # @sveltejs/kit
 
+## 1.0.0-next.185
+
+### Patch Changes
+
+- [fix] allow users to override build target ([#2618](https://github.com/sveltejs/kit/pull/2618))
+
 ## 1.0.0-next.184
 
 ### Patch Changes
