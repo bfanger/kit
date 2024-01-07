@@ -298,9 +298,9 @@ export async function render_response({
 		const blocks = [];
 
 		const properties = [
+			'env',
 			paths.assets && `assets: ${s(paths.assets)}`,
-			`base: ${base_expression}`,
-			`env: ${!client.uses_env_dynamic_public || state.prerendering ? null : s(public_env)}`
+			`base: ${base_expression}`
 		].filter(Boolean);
 
 		if (chunks) {
@@ -324,8 +324,6 @@ export async function render_response({
 					};`);
 
 		const args = ['app', 'element'];
-
-		blocks.push('const element = document.currentScript.parentElement;');
 
 		if (page_config.ssr) {
 			const serialized = { form: 'null', error: 'null' };
@@ -379,11 +377,15 @@ export async function render_response({
 						});
 					}`);
 		}
-
+		let env = '{}';
+		const envPublicModule = prefixed(`${options.app_dir}/env.js`); // @todo Use config.kit.env.publicModule
+		if (client.uses_env_dynamic_public) {
+			env = state.prerendering ? `import(${s(envPublicModule)})` : s(public_env);
+		}
 		const init_app = `
-				{
+				Promise.all([${env}, document.currentScript.parentElement]).then(([env, element]) => {
 					${blocks.join('\n\n\t\t\t\t\t')}
-				}
+				})
 			`;
 		csp.add_script(init_app);
 
